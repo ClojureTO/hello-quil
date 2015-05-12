@@ -14,6 +14,5 @@
   ; This sketch uses functional-mode middleware.
   ; Check quil wiki for more info about middlewares and particularly
   ; fun-mode.
-  :middleware [m/fun-mode]
-  )
+  :middleware [m/fun-mode])
 
