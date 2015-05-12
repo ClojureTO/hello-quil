@@ -16,17 +16,17 @@
   {:color (mod (+ (:color state) 0.7) 255)
    :angle (+ (:angle state) 0.1)})
 
-(defn draw-state [state]
+(defn draw-state [{:keys [color angle]}]
   ; Clear the sketch by filling it with light-grey color.
   (q/background 240)
   ; Set circle color.
-  (q/fill (:color state) 255 255)
+  (q/fill color 255 255)
   ; Calculate x and y coordinates of the circle.
-  (let [angle (:angle state)
+  (let [angle angle
         x (* 150 (q/cos angle))
         y (* 150 (q/sin angle))]
     ; Move origin point to the center of the sketch.
     (q/with-translation [(/ (q/width) 2)
                          (/ (q/height) 2)]
       ; Draw the circle.
-      (q/ellipse x y 100 100))))
+      (q/ellipse x y 200 100))))
