@@ -22,7 +22,8 @@
        initial-y (- mid-x (/ paddle-height 2))]
     {:player1 {:y initial-y}
      :player2 {:y initial-y}
-     :ball {:x mid-x
+     :keys #{}
+     :ball {:x (- mid-x (/ ball-diameter 2))
             :y mid-y
             :dx (v)
             :dy (v)}}))
@@ -40,29 +41,42 @@
              ball-diameter
              ball-diameter))
 
-(defn update-state [state]
-  (println (:ball state))
-  (update-in state [:ball]
-             (fn [{:keys [x y dx dy]}]
-               (if (and (< x width) (> x 0))
-                 {:x (+ x dx)
-                  :y (+ y dy)
-                  :dx dx
-                  :dy dy}))))
-
 (defn down [y]
   (if (< y (- height paddle-height)) (+ y 10) y))
 
 (defn up [y]
   (if (> y 0) (- y 10) y))
 
+(defn update-player-positions [state]
+  (reduce
+   (fn [state key]
+     (case key
+       :a    (update-in state [:player2 :y] up)
+       :z    (update-in state [:player2 :y] down)
+       :up   (update-in state [:player1 :y] up)
+       :down (update-in state [:player1 :y] down)
+       state))
+   state (:keys state)))
+
+(defn update-state [state]
+  (-> state
+      update-player-positions
+      (update-in
+       [:ball]
+       (fn [{:keys [x y dx dy]}]
+         (if (and (< x width) (> x 0))
+           {:x (+ x dx)
+            :y (+ y dy)
+            :dx dx
+            :dy dy})))))
+
 (defn key-press [state {:keys [key]}]
-  (case key
-    :a    (update-in state [:player2 :y] up)
-    :z    (update-in state [:player2 :y] down)
-    :up   (update-in state [:player1 :y] up)
-    :down (update-in state [:player1 :y] down)
+  (if (some #{key} [:a :z :up :down])
+    (update-in state [:keys] conj key)
     state))
+
+(defn key-release [state]
+  (assoc state :keys #{}))
 
 (defn draw-state [{:keys [ball player1 player2]}]
   ; Clear the sketch by filling it with black color.

@@ -14,7 +14,7 @@
   :update #'app/update-state
   :draw #'app/draw-state
   :key-pressed #'app/key-press
-
+  :key-released #'app/key-release
   ; This sketch uses functional-mode middleware.
   ; Check quil wiki for more info about middlewares and particularly
   ; fun-mode.
