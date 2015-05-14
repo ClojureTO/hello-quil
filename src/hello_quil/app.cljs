@@ -11,18 +11,21 @@
   ((if (> (rand) 0.5) + -) (inc (rand-int 4))))
 
 (defn setup []
-  ; Set frame rate to 30 frames per second.
-  (q/frame-rate 30)
+  ; Set frame rate to 60 frames per second.
+  (q/frame-rate 60)
   ; Set color mode to HSB (HSV) instead of default RGB.
   (q/color-mode :hsb)
   ; setup function returns initial state. It contains
-  ; circle color and position.
-  {:player1 {:y 0}
-   :player2 {:y 0}
-   :ball {:x (/ width 2)
-          :y (/ height 2)
-          :dx (v)
-          :dy (v)}})
+  ; the player paddles and the ball
+  (let[mid-x     (/ width 2)
+       mid-y     (/ height 2)
+       initial-y (- mid-x (/ paddle-height 2))]
+    {:player1 {:y initial-y}
+     :player2 {:y initial-y}
+     :ball {:x mid-x
+            :y mid-y
+            :dx (v)
+            :dy (v)}}))
 
 (defn draw-paddle [x y]
   (q/rect x y paddle-width paddle-height))
@@ -38,14 +41,14 @@
              ball-diameter))
 
 (defn update-state [state]
+  (println (:ball state))
   (update-in state [:ball]
-    (fn [{:keys [x y dx dy] :as ball}]
-      (if (and (< x width) (> x 0))
-        {:x (+ x dx)
-         :y (+ y dy)
-         :dx dx
-         :dy dy}
-        ball))))
+             (fn [{:keys [x y dx dy]}]
+               (if (and (< x width) (> x 0))
+                 {:x (+ x dx)
+                  :y (+ y dy)
+                  :dx dx
+                  :dy dy}))))
 
 (defn down [y]
   (if (< y (- height paddle-height)) (+ y 10) y))
@@ -62,10 +65,10 @@
     state))
 
 (defn draw-state [{:keys [ball player1 player2]}]
-  ; Clear the sketch by filling it with light-grey color.
+  ; Clear the sketch by filling it with black color.
   (q/background 0)
-  ; Set circle color.
+  ; Set foreground color.
   (q/fill 255 255 255)
-  ; Calculate x and y coordinates of the circle.
+  ; draw the player paddles and the ball
   (draw-paddles player1 player2)
   (draw-ball ball))
