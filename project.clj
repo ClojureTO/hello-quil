@@ -14,7 +14,7 @@
 
   :cljsbuild {
               :builds [{:source-paths ["src/"]
-                        :figwheel true #_{:on-jsload "hello-quil.core/reload-hook"}
+                        :figwheel true
                         :compiler {:main "hello-quil.core"
                                    :asset-path "js/out"
                                    :output-to "resources/public/js/quil.js"
