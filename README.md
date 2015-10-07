@@ -6,7 +6,7 @@ A starter Quil sketch project
 
 * [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Leiningen](http://leiningen.org/)
-* 
+
 ## Usage
 
 Run `lein figwheel` and then open `http://localhost:3449/` in your browser.
