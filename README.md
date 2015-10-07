@@ -1,7 +1,12 @@
 # hello-quil
 
-A Quil sketch designed to ... well, that part is up to you.
+A starter Quil sketch project
 
+### Prerequisites
+
+* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Leiningen](http://leiningen.org/)
+* 
 ## Usage
 
 Run `lein figwheel` and then open `http://localhost:3449/` in your browser.
